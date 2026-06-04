@@ -1,6 +1,30 @@
+<div align="center">
+
 # 📊 NS-3 Network Simulation: TCP Cubic & CUBIC-FIT
 
-This project evaluates the performance of **TCP Cubic** and **TcpCubicFit** congestion control algorithms under varying network conditions using **ns-3.45**. Simulations are executed across both wired (dumbbell) and wireless (mobility-enabled AP-station) network topologies.
+**Performance evaluation of congestion control variants** under diverse configurations.  
+Runs wired dumbbell point-to-point and wireless mobile AP-station simulations using **ns-3.45**.
+
+[![ns-3](https://img.shields.io/badge/ns--3-3.45-FF6600?style=flat-square)](https://www.nsnam.org)
+[![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?style=flat-square&logo=c%2B%2B&logoColor=white)](https://isocpp.org)
+[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](./LICENSE)
+
+[Features](#-features) · [Topologies](#-topologies) · [Execution & Parameters](#-execution--parameters) · [Metrics](#-performance-metrics-analyzed)
+
+</div>
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 🎛️ **Algorithmic Evaluation** | Side-by-side comparison of `ns3::TcpCubic` and custom `ns3::TcpCubicFit`. |
+| 🔀 **Topology Models** | Supports both Wired Dumbbell Point-to-Point and Wireless AP-STA simulation setups. |
+| 🏃‍♂️ **Node Mobility** | Simulates mobile stations in 2D space using `ns3::RandomWalk2dMobilityModel`. |
+| 🔋 **Energy Monitoring** | Integrates `ns3::BasicEnergySource` to measure Wi-Fi interface power consumption (Joules). |
+| 📈 **Automation Scripts** | Shell wrappers to batch run simulation scenarios and generate data files. |
 
 ---
 
@@ -25,16 +49,34 @@ This project evaluates the performance of **TCP Cubic** and **TcpCubicFit** cong
 
 ---
 
-## 📂 Key Code Files
+## 🛠️ Tech Stack
 
-*   [cubic-fit-wired.cc](file:///home/sudip-kumar-saha/Desktop/CSE-322-Computer%20Network/NS3-Project/ns-3.45/scratch/cubic-fit-wired.cc): Wired dumbbell point-to-point network helper.
-*   [cubic-fit-wireless.cc](file:///home/sudip-kumar-saha/Desktop/CSE-322-Computer%20Network/NS3-Project/ns-3.45/scratch/cubic-fit-wireless.cc): Wireless network with mobility models, propagation loss models, Minstrel HT manager, and radio energy depletion modeling.
+| Layer | Technology | Purpose |
+|---|---|---|
+| **Core Engine** | ns-3.45 (C++17) | Discrete-event network simulation framework |
+| **Routing & Mac** | Minstrel HT, Range Propagation | Manages Wi-Fi physical channels and dynamic rate adaptation |
+| **Analysis** | FlowMonitor | Tracks packet statistics, latencies, and drops |
+| **Plotting** | Python 3 + Matplotlib | Compiles results into comparative performance graphs |
+
+---
+
+## 📂 Project Structure
+
+```
+├── ns-3.45/
+│   ├── scratch/
+│   │   ├── cubic-fit-wired.cc       # Wired dumbbell topology source
+│   │   └── cubic-fit-wireless.cc    # Wireless AP-STA mobility and energy source
+│   └── src/internet/model/
+│       ├── tcp-cubic-fit.cc         # CUBIC-FIT congestion logic implementation
+│       └── tcp-cubic-fit.h          # CUBIC-FIT module headers
+```
 
 ---
 
 ## 🚀 Execution & Parameters
 
-Commands must be run from the root of the **ns-3.45** directory:
+All scripts should be executed from the root of the **ns-3.45** directory:
 
 ### Run Wired Simulation
 ```bash
@@ -50,7 +92,7 @@ Commands must be run from the root of the **ns-3.45** directory:
 > **Key Configuration Parameters:**
 > | Argument | Description | Default |
 > |---|---|---|
-> | `--transport_prot` | TCP variant (e.g., `ns3::TcpCubic` or `ns3::TcpCubicFit`) | `ns3::TcpCubic` |
+> | `--transport_prot` | TCP variant (e.g. `ns3::TcpCubic` or `ns3::TcpCubicFit`) | `ns3::TcpCubic` |
 > | `--nWifi` / `--nFlows` | Number of client nodes / active TCP flows | 6 / 2 |
 > | `--errorRate` | Packet drop probability | `0.001` |
 > | `--isMobile` | Toggles RandomWalk2d node mobility | `true` |
@@ -60,10 +102,10 @@ Commands must be run from the root of the **ns-3.45** directory:
 
 ## 📈 Performance Metrics Analyzed
 
-At the end of each simulation, the following metrics are output to console and appended to a results output file:
-1. **Total Throughput (Mbps)**
-2. **Average End-to-End Delay (ns)**
-3. **Packet Delivery Ratio (PDR %)**
-4. **Packet Drop Ratio (%)**
-5. **Jain's Fairness Index**
-6. **Total Energy Consumed (Joules)** (Wireless only)
+At the end of each simulation, results are printed to the console and appended to your data files:
+1. **Total Throughput (Mbps)** — Rate of successful packet deliveries.
+2. **Average End-to-End Delay (ns)** — Average traversal latency.
+3. **Packet Delivery Ratio (PDR %)** — Percentage of sent packets successfully received.
+4. **Packet Drop Ratio (%)** — Percentage of packets lost in congestion/channel interference.
+5. **Jain's Fairness Index** — Quantitative measure of throughput equity among competing flows.
+6. **Total Energy Consumed (Joules)** — Power consumed by wireless radios (Tx/Rx/Idle).
