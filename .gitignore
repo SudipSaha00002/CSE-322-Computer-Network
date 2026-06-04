@@ -1,0 +1,22 @@
+# Java Class Files
+*.class
+
+# Python Virtual Environment & Cache
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+.directory
+
+# ns-3 Build Artifacts & Logs
+**/build/
+**/cmake-cache/
+**/.lock-wscript
+**/*.log
+**/*.txt.temp
